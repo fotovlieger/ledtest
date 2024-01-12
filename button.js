@@ -5,7 +5,7 @@ window.addEventListener("load", onLoad);
 
 function onLoad() {
   initializeSocket();
-  setTimeout(onTimeout, 2000);
+  //setTimeout(onTimeout, 2000);
 }
 
 function onTimeout(){
@@ -30,13 +30,13 @@ function onClose(event) {
 }
 
 function onMessage(event) {
-  //console.log("WebSocket message received:", event);
+  console.log("WebSocket message received:", event);
   const obj = JSON.parse(event.data);
   updateValues(obj);
 }
 
 function sendMessage(message) {
-  //console.log("WebSocket send: ", message);
+  console.log("WebSocket send: ", message);
   websocket.send(message);
 }
 

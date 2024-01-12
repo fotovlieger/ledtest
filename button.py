@@ -17,6 +17,9 @@ state = {
     'hans':       '40,40,40',
 }
 
+connections = {
+}
+
 app = Microdot()
 Response.default_content_type = 'text/html'
 
@@ -37,15 +40,27 @@ async def update_strip():
             strip1[8]=(0,80,0)
         strip1.write()
         
-        await asyncio.sleep(1)  # Sleep for 1 second before next iteration 
+        await asyncio.sleep(.2)  # Sleep before next iteration 
 
-async def tmp():
+async def update_websockets():
+    oldVal = ''
     while True:
-        await asyncio.sleep(0.5)  # Sleep before next iteration
+        newVal = json.dumps(state)
+        if oldVal != newVal:
+            oldVal = newVal
+            for ip, ws in connections.items():
+                try:
+                    print('update',ip)
+                    await ws.send(json.dumps(state))
+                except:
+                    print('cancel',ip)
+                    connections.pop(ip)
+
+        await asyncio.sleep(.2)  # Sleep before next iteration
 
 loop = asyncio.get_event_loop()
 loop.create_task(update_strip())
-loop.create_task(tmp())
+loop.create_task(update_websockets())
 
 @app.route('/')
 async def index(request):
@@ -78,7 +93,8 @@ def onUpdate(data):
 @app.route('/ws')
 @with_websocket
 async def updater(request, ws):
-    print('updater start')
+    print('updater start', ws.request.client_addr)
+    connections[ws.request.client_addr] = ws
     await ws.send(json.dumps(state))
 
     while True:
@@ -91,8 +107,7 @@ async def updater(request, ws):
         except ValueError:  # includes simplejson.decoder.JSONDecodeError
             pass
 
-        await ws.send(json.dumps(state))
-        #time.sleep(0.1)
+         #time.sleep(0.1)
     print('updater end')
 
 @app.route("/<path:path>")

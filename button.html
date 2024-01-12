@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Button...</title>
+    <link rel="stylesheet" href="button.css" />
+</head>
+<body>
+<script src="jscolor.min.js"></script>
+
+    <h1>Button</h1>
+    Led1:
+    <label class="switch">
+      <input id='led1' type="checkbox" onclick='onLedClicked(this);'>
+      <span class="slider round"></span>
+    </label>
+    Led2:
+    <label class="switch">
+      <input id='led2' type="checkbox" onclick='onLedClicked(this);'>
+      <span class="slider round"></span>
+    </label>
+     Led3:   
+    <label class="switch">
+      <input id='led3' type="checkbox" onclick='onLedClicked(this);'>
+      <span class="slider round"></span>
+    </label>  
+    <br>
+	<p>
+		<button id='hans' data-jscolor="{
+			onChange: 'onColor(this, \'hans\')',
+			palette: '#fff #fcd #fdc #ffc #dfc #dff #cdf #dcf #ccc', 
+            paletteCols: 9, paletteHeight: 25,
+            value:'CCFFAA'}">
+		</button>
+	</p>
+	<em id="pr1" style="display:inline-block; padding:1em;">change event</em>
+
+    <script src="button.js"></script>
+</body>
+</html>

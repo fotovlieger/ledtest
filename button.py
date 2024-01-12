@@ -114,11 +114,15 @@ async def updater(request, ws):
 def static(request, path):
     if ".." in path:
          return "Not found", 404
-    print('get: ' + path)
+    try:
+        os.stat(path)
+    except:
+        return "Not found", 404
+    
     return send_file(path)
 
 if __name__ == "__main__":
     try:
-        app.run()
+        app.run(debug=True)
     except KeyboardInterrupt:
         pass
